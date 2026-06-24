@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Squadra</title>
+</head>
+<body>
+<h1>Dettaglio squadra</h1>
+<p>
+    <strong>Nome società: </strong>
+    <span th:text="${modelSquadra.nome}"></span>
+</p>
+<p>
+    <strong>Anno fondazione: </strong>
+    <span th:text="${modelSquadra.annoFondazione}"></span>
+</p>
+<p>
+    <strong>Città:</strong>
+    <span th:text="${modelSquadra.citta}"></span>
+</p>
+<h1></h1>
+<p>
+    <strong>Lista giocatori: </strong>
+</p>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Dettagli giocatore</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="giocatore:${modelGiocatoriSquadra}">
+        <td th:text="${giocatore.nome}"></td>
+        <td th:text="${giocatore.cognome}"></td>
+
+        <td>
+            <a th:href="@{/giocatore/{id}(id=${giocatore.id})}">Vai al dettaglio</a>
+        </td>
+
+    </tr>
+
+    </tbody>
+
+
+</table>
+<br>
+<a th:href="@{/listaSquadre}">Torna alla lista squadre</a>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <br>
+    <a th:href="@{/admin/squadra/{id}/modifica(id=${modelSquadra.id})}">
+        Modifica squadra
+    </a>
+</div>
+
+<br>
+<a th:href="@{/home}">Torna alla home</a>
+
+</body>
+</html>

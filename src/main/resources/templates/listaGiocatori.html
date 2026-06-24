@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>lista Squadre</title>
+</head>
+<body>
+<h1>Lista giocatori registrati</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>Nome</th>
+    <th>Cognome</th>
+    <th>Squadra</th>
+    <th>Dettaglio</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="giocatore:${modelGiocatori}">
+    <td th:text="${giocatore.nome}"></td>
+    <td th:text="${giocatore.cognome}"></td>
+    <td th:text="${giocatore.squadra != null ? giocatore.squadra.nome : 'Nessuna squadra'}"></td>
+
+
+    <td>
+      <a th:href="@{/giocatore/{id}(id=${giocatore.id})}">Vai al dettaglio</a>
+    </td>
+
+  </tr>
+
+  </tbody>
+
+
+</table>
+
+
+<br><br>
+<div sec:authorize="hasAuthority('ADMIN')">
+  <a th:href="@{/admin/listaGiocatori/nuovo}">Inserisci nuovo giocatore</a>
+  <br><br>
+</div>
+
+<br>
+<a th:href="@{/home}">torna alla home</a>
+
+</body>
+</body>
+</html>

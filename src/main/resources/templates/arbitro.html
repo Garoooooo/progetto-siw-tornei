@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio arbitro</title>
+</head>
+<body>
+<h1>Dettaglio arbitro</h1>
+<p>
+    <strong>Nome: </strong>
+    <span th:text="${modelArbitro.nome}"></span>
+</p>
+<p>
+    <strong>Cognome: </strong>
+    <span th:text="${modelArbitro.cognome}"></span>
+</p>
+<p>
+    <strong>Codice arbitrale: </strong>
+    <span th:text="${modelArbitro.codiceArbitrale}"></span>
+</p>
+
+<h1>
+    Partite arbitrate dall'arbitro
+    <span th:text="${modelArbitro.nome + ' ' + modelArbitro.cognome}"></span>:
+</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Giornata</th>
+        <th>Torneo</th>
+        <th>Data e ora</th>
+        <th>Luogo</th>
+        <th>Arbitro</th>
+        <th>Stato</th>
+        <th>Squadra casa</th>
+        <th>Squadra ospite</th>
+        <th>Goal casa</th>
+        <th>Goal ospite</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="partita : ${modelPartiteArbitrateDallArbitro}">
+        <td th:text="${partita.giornata}"></td>
+
+        <td>
+            <a th:href="@{/listaTornei/{id}(id=${partita.torneo.id})}"
+               th:text="${partita.torneo.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.dataOraPartita}"></td>
+
+        <td th:text="${partita.luogo}"></td>
+
+        <td th:text="${partita.arbitro.nome + ' ' + partita.arbitro.cognome}"></td>
+
+        <td th:text="${partita.statoPartita}"></td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraCasa.id})}"
+               th:text="${partita.squadraCasa.nome}">
+            </a>
+        </td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraOspite.id})}"
+               th:text="${partita.squadraOspite.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.goalsHome}"></td>
+        <td th:text="${partita.goalsAway}"></td>
+
+
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/listaArbitri}">Torna indietro alla lista arbitri</a>
+<br><br>
+<a th:href="@{/home}">Torna alla home</a>
+
+</body>
+</html>

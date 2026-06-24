@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>lista Squadre</title>
+</head>
+<body>
+<h1>Lista squadre registrate</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Dettaglio</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="squadra:${modelSquadre}">
+        <td th:text="${squadra.nome}"></td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${squadra.id})}">Vai al dettaglio</a>
+        </td>
+
+    </tr>
+
+    </tbody>
+
+
+</table>
+
+
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <br>
+    <a th:href="@{/admin/listaSquadre/nuova}">Inserisci nuova squadra</a>
+
+</div>
+<br>
+<a th:href="@{/home}">torna alla home</a>
+
+</body>
+</body>
+</html>

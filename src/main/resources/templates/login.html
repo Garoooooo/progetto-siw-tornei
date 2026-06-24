@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+<h1>Login</h1>
+
+<!-- La form manda username e password a Spring Security -->
+<form th:action="@{/login}" method="post">
+
+    <div>
+        <!-- Testo mostrato vicino alla casella -->
+        <label>Username:</label>
+
+        <!-- Campo username richiesto da Spring Security -->
+        <input type="text" name="username">
+    </div>
+<h1></h1>
+    <div>
+        <!-- Testo mostrato vicino alla casella -->
+        <label>Password:</label>
+
+        <!-- Campo password richiesto da Spring Security -->
+        <input type="password" name="password">
+    </div>
+<h1></h1>
+    <!-- Bottone che invia la form di login -->
+    <button type="submit">Accedi</button>
+
+</form>
+    <h1></h1>
+    <!-- Messaggio mostrato solo se il login fallisce -->
+    <p th:if="${param.error}">
+        Username o password errati.
+    </p>
+
+<!-- Messaggio mostrato solo dopo il logout -->
+<p th:if="${param.logout}">
+    Logout effettuato.
+</p>
+
+<!-- Link per andare alla pagina di registrazione -->
+<a th:href="@{/registrazione}">Non hai un account? Registrati</a>
+<br><br>
+<a th:href="@{/}">Torna alla schermata principale</a>
+
+</body>
+</html>

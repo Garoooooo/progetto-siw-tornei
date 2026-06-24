@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio torneo</title>
+</head>
+<body>
+
+<h1>Dettaglio torneo</h1>
+
+<p>
+    <strong>Nome torneo:</strong>
+    <span th:text="${modelTorneo.nome}"></span>
+</p>
+
+<p>
+    <strong>Anno:</strong>
+    <span th:text="${modelTorneo.anno}"></span>
+</p>
+
+<p>
+    <strong>Descrizione:</strong>
+    <span th:text="${modelTorneo.descrizione}"></span>
+</p>
+
+<h1>Lista squadre partecipanti:</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Squadra</th>
+        <th>Dettaglio squadra</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="squadra : ${modelSquadre}">
+        <td th:text="${squadra.nome}"></td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${squadra.id})}">
+                Vai al dettaglio
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Classifica:</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Squadra</th>
+        <th>Punti</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="riga : ${modelClassifica}">
+        <td>
+            <a th:href="@{/squadra/{id}(id=${riga.squadra.id})}"
+               th:text="${riga.squadra.nome}">
+            </a>
+        </td>
+
+        <td th:text="${riga.punteggio}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<h1>Calendario partite:</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Giornata</th>
+        <th>Torneo</th>
+        <th>Data e ora</th>
+        <th>Luogo</th>
+        <th>Arbitro</th>
+        <th>Stato</th>
+        <th>Squadra casa</th>
+        <th>Squadra ospite</th>
+        <th>Goal casa</th>
+        <th>Goal ospite</th>
+        <th sec:authorize="hasAuthority('ADMIN')">Modifica</th>
+        <th sec:authorize="hasAuthority('ADMIN')">Elimina</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="partita : ${modelPartiteTorneo}">
+        <td th:text="${partita.giornata}"></td>
+
+        <td>
+            <a th:href="@{/listaTornei/{id}(id=${partita.torneo.id})}"
+               th:text="${partita.torneo.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.dataOraPartita}"></td>
+
+        <td th:text="${partita.luogo}"></td>
+
+        <td th:text="${partita.arbitro != null ? partita.arbitro.nome + ' ' + partita.arbitro.cognome : 'Nessun arbitro assegnato'}"></td>
+
+        <td th:text="${partita.statoPartita}"></td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraCasa.id})}"
+               th:text="${partita.squadraCasa.nome}">
+            </a>
+        </td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraOspite.id})}"
+               th:text="${partita.squadraOspite.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.goalsHome}"></td>
+
+        <td th:text="${partita.goalsAway}"></td>
+
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/admin/partita/{id}/modifica(id=${partita.id})}">
+                Modifica partita
+            </a>
+        </td>
+
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <form th:action="@{/admin/partita/{id}/elimina(id=${partita.id})}" method="post">
+                <button type="submit">Elimina partita</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <br>
+
+    <form th:action="@{/admin/torneo/{id}/aggiungiSquadra(id=${modelTorneo.id})}" method="post">
+        <span><strong>Registra nuova squadra al torneo --> </strong></span>
+
+        <label>Seleziona squadra:</label>
+
+        <select name="squadraId">
+            <option th:each="squadra : ${modelTutteSquadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+            </option>
+        </select>
+
+        <button type="submit">Conferma</button>
+    </form>
+
+    <br>
+    <a th:href="@{/admin/torneo/{id}/modifica(id=${modelTorneo.id})}">
+        Modifica torneo
+    </a>
+</div>
+
+<br>
+<div sec:authorize="hasAuthority('ADMIN')">
+<a th:href="@{/admin/torneo/{id}/partita/nuova(id=${modelTorneo.id})}">
+    Inserisci nuova partita
+</a>
+<br><br>
+</div>
+<a th:href="@{/listaTornei}">
+    Torna alla pagina della lista di tutti i tornei
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">
+    Torna alla home
+</a>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Registrazione</title>
+</head>
+<body>
+
+<h1>Registrazione</h1>
+
+<!-- La form manda i dati al metodo POST /registrazione del controller -->
+<form th:action="@{/registrazione}" th:object="${utente}" method="post">
+
+  <div>
+    <!-- Testo mostrato vicino alla casella -->
+    <label>Username:</label>
+
+    <!-- Campo collegato all'attributo username dell'oggetto Utente -->
+    <input type="text" th:field="*{username}">
+  </div>
+<h1></h1>
+  <div>
+    <!-- Testo mostrato vicino alla casella -->
+    <label>Password:</label>
+
+    <!-- Campo collegato all'attributo password dell'oggetto Utente -->
+    <input type="password" th:field="*{password}">
+  </div>
+<h1></h1>
+  <!-- Bottone che invia la form -->
+  <button type="submit">Registrati</button>
+
+</form>
+<h1></h1>
+<!-- Link per andare alla pagina di login -->
+<a th:href="@{/login}">Hai già un account? Accedi</a>
+<br><br>
+<a th:href="@{/}">Torna alla schermata principale</a>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Tornei</title>
+</head>
+<body>
+
+<h1>Tornei</h1>
+
+<h2>Lista tornei:</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Anno</th>
+        <th>Descrizione</th>
+        <th>Dettaglio</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="torneo:${modelTornei}">
+        <td th:text="${torneo.nome}"></td>
+        <td th:text="${torneo.anno}"></td>
+        <td th:text="${torneo.descrizione}"></td>
+
+        <td>
+            <a th:href="@{/listaTornei/{id}(id=${torneo.id})}">Vai al dettaglio</a>
+        </td>
+
+    </tr>
+
+    </tbody>
+
+
+</table>
+<div sec:authorize="hasAuthority('ADMIN')">
+    <br>
+    <a th:href="@{/admin/listaTornei/nuovo}">Inserisci nuovo torneo</a>
+
+</div>
+
+<br>
+<a th:href="@{/home}">torna alla home</a>
+
+</body>
+</html>

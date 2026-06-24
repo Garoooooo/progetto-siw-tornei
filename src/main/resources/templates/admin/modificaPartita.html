@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica partita</title>
+</head>
+<body>
+
+<h1>Modifica partita</h1>
+
+<form th:action="@{/admin/partita/{id}/modifica(id=${modelPartita.id})}"
+      th:object="${modelPartita}"
+      method="post">
+
+    <div>
+        <label>Giornata: </label>
+        <input type="number" th:field="*{giornata}" min="1">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Torneo: </label>
+        <span th:text="${modelTorneo.nome}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Data e ora partita: </label>
+        <input type="datetime-local" th:field="*{dataOraPartita}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Luogo:</label>
+        <input type="text" th:field="*{luogo}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Arbitro:</label>
+        <select name="arbitroId">
+            <option th:each="arbitro : ${modelArbitri}"
+                    th:value="${arbitro.id}"
+                    th:text="${arbitro.nome + ' ' + arbitro.cognome}"
+                    th:selected="${modelPartita.arbitro != null and arbitro.id == modelPartita.arbitro.id}">
+            </option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Stato partita:</label>
+        <select th:field="*{statoPartita}">
+            <option value="SCHEDULED">SCHEDULED</option>
+            <option value="PLAYED">PLAYED</option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Squadra casa:</label>
+        <select name="squadraCasaId">
+            <option th:each="squadra : ${modelSquadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}"
+            </option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Squadra ospite:</label>
+        <select name="squadraOspiteId">
+            <option th:each="squadra : ${modelSquadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}"
+            </option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Goal squadra casa:</label>
+        <input type="number" th:field="*{goalsHome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Goal squadra ospite:</label>
+        <input type="number" th:field="*{goalsAway}">
+    </div>
+
+    <br>
+
+    <button type="submit">Salva modifiche</button>
+
+</form>
+
+<br>
+
+<a th:href="@{/listaTornei/{id}(id=${modelTorneo.id})}">
+    Torna al dettaglio torneo
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">
+    Torna alla home
+</a>
+
+</body>
+</html>

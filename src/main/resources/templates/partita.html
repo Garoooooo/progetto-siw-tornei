@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio partita</title>
+</head>
+<body>
+
+<h1>Dettaglio partita</h1>
+
+<p>
+    <strong>Torneo:</strong>
+    <span th:text="${modelPartita.torneo.nome}"></span>
+</p>
+
+<p>
+    <strong>Giornata:</strong>
+    <span th:text="${modelPartita.giornata}"></span>
+</p>
+
+<p>
+    <strong>Data:</strong>
+    <span th:text="${#temporals.format(modelPartita.dataOraPartita, 'dd/MM/yyyy HH:mm')}"></span>
+</p>
+
+<p>
+    <strong>Luogo:</strong>
+    <span th:text="${modelPartita.luogo}"></span>
+</p>
+
+<p>
+    <strong>Squadra casa:</strong>
+    <span th:text="${modelPartita.squadraCasa.nome}"></span>
+</p>
+
+<p>
+    <strong>Squadra ospite:</strong>
+    <span th:text="${modelPartita.squadraOspite.nome}"></span>
+</p>
+
+<p>
+    <strong>Risultato:</strong>
+    <span th:text="${modelPartita.goalsHome}"></span>
+    -
+    <span th:text="${modelPartita.goalsAway}"></span>
+</p>
+
+<h2>Commenti</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Autore</th>
+        <th>Testo</th>
+        <th>Data</th>
+        <th>Azioni</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="commento : ${modelCommentiPartita}">
+        <td th:text="${commento.utente.username}"></td>
+
+        <td th:text="${commento.testo}"></td>
+
+        <td th:text="${#temporals.format(commento.dataEOra, 'dd/MM/yyyy HH:mm')}"></td>
+
+        <td>
+            <form th:if="${#authentication.name == commento.utente.username}"
+                  th:action="@{/commento/{id}/elimina(id=${commento.id})}"
+                  method="post">
+                <input type="hidden" name="idPartita" th:value="${modelPartita.id}">
+                <button type="submit">Elimina</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div sec:authorize="isAuthenticated()">
+    <h3>Aggiungi un commento</h3>
+
+    <form th:action="@{/partita/{id}/commento(id=${modelPartita.id})}" method="post">
+        <textarea name="testo" rows="4" cols="50" required></textarea>
+        <br><br>
+        <button type="submit">Pubblica commento</button>
+    </form>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    <p>Devi effettuare il login per scrivere un commento.</p>
+    <a th:href="@{/login}">Fai il login</a>
+</div>
+
+<br>
+
+<a th:href="@{/listaPartite}">Torna alla lista partite</a>
+<br><br>
+<a th:href="@{/home}">Torna alla home</a>
+
+</body>
+</html>

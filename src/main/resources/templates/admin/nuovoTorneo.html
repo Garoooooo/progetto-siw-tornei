@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuovo Torneo</title>
+</head>
+
+<body>
+
+<h1>Registrazione nuovo torneo</h1>
+
+<form th:action="@{/admin/listaTornei/nuovo}" th:object="${modelNuovoTorneo}" method="post">
+
+    <div>
+        <label>Inserisci nome torneo:</label>
+        <input type="text" th:field="*{nome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci annata torneo:</label>
+        <input type="number" th:field="*{anno}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci descrizione torneo:</label>
+        <input type="text" th:field="*{descrizione}">
+    </div>
+
+    <br>
+
+    <button type="submit">Aggiungi torneo</button>
+
+</form>
+
+<br>
+
+<a th:href="@{/listaTornei}">Torna alla lista tornei</a>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio giocatore</title>
+</head>
+<body>
+<h1>Dettaglio giocatore</h1>
+
+<p>
+    <strong>Nome: </strong>
+    <span th:text="${modelGiocatore.nome}"></span>
+</p>
+
+<p>
+    <strong>Cognome: </strong>
+    <span th:text="${modelGiocatore.cognome}"></span>
+</p>
+
+<p>
+    <strong>Data di nascita: </strong>
+    <span th:text="${modelGiocatore.dataDiNascita}"></span>
+</p>
+
+<p>
+    <strong>Altezza:</strong>
+    <span th:text="${modelGiocatore.altezza}"></span>
+</p>
+
+<p>
+    <strong>Squadra: </strong>
+    <span th:text="${modelGiocatore.squadra != null ? modelGiocatore.squadra.nome : 'Nessuna squadra'}"></span>
+</p>
+
+<p>
+    <strong>Numero maglia: </strong>
+    <span th:text="${modelGiocatore.numeroMaglia}"></span>
+</p>
+
+<p>
+    <strong>Ruolo: </strong>
+    <span th:text="${modelGiocatore.ruoloGiocatore}"></span>
+</p>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <a th:href="@{/admin/giocatore/{id}/modifica(id=${modelGiocatore.id})}">
+        Modifica giocatore
+    </a>
+    <br>
+</div>
+
+<a th:if="${modelGiocatore.squadra != null}"
+   th:href="@{/squadra/{id}(id=${modelGiocatore.squadra.id})}">
+    Torna indietro al dettaglio squadra
+</a>
+
+<a th:if="${modelGiocatore.squadra == null}"
+   th:href="@{/listaGiocatori}">
+    Torna alla lista giocatori
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">Torna alla home</a>
+
+</body>
+</html>

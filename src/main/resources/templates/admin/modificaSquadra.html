@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica squadra</title>
+</head>
+<body>
+
+<h1>Modifica squadra</h1>
+
+<form th:action="@{/admin/squadra/{id}/modifica(id=${modelSquadra.id})}"
+      th:object="${modelSquadra}"
+      method="post">
+
+    <div>
+        <label>Nome squadra: </label>
+        <input type="text" th:field="*{nome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Anno fondazione: </label>
+        <input type="number" th:field="*{annoFondazione}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>città: </label>
+        <input type="text" th:field="*{citta}">
+    </div>
+
+    <br>
+
+    <button type="submit">Salva modifiche</button>
+
+</form>
+
+<br>
+<div sec:authorize="hasAuthority('ADMIN')">
+
+
+</div>
+<h3>Aggiungi giocatori alla squadra</h3>
+
+<form th:action="@{/admin/squadra/{id}/aggiungiGiocatore(id=${modelSquadra.id})}" method="post">
+
+    <label>Seleziona giocatore da aggiungere:</label>
+
+    <select name="giocatoreId">
+        <option value="" selected>
+            nessun giocatore selezionato
+        </option>
+
+        <option th:each="giocatore : ${modelGiocatoriSistemaSenzaSquadra}"
+                th:value="${giocatore.id}"
+                th:text="${giocatore.nome + ' ' + giocatore.cognome}">
+        </option>
+    </select>
+
+    <button type="submit">Conferma aggiunta</button>
+
+</form>
+
+
+<br>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+
+    <h3>Rimuovi giocatori dalla squadra</h3>
+
+    <form th:action="@{/admin/squadra/{id}/rimuoviGiocatore(id=${modelSquadra.id})}" method="post">
+
+        <label>Seleziona giocatore da rimuovere:</label>
+
+        <select name="giocatoreId">
+            <option value="" selected>
+                nessun giocatore selezionato
+            </option>
+
+            <option th:each="giocatore : ${modelGiocatori}"
+                    th:value="${giocatore.id}"
+                    th:text="${giocatore.nome + ' ' + giocatore.cognome}">
+            </option>
+        </select>
+
+        <button type="submit">Conferma eliminazione</button>
+
+    </form>
+    <br>
+    <form th:action="@{/admin/squadra/{id}/elimina(id=${modelSquadra.id})}" method="post">
+        <button type="submit">Elimina squadra dal database</button>
+    </form>
+</div>
+
+<br>
+
+<a th:href="@{/listaSquadre}">
+    Torna alla lista delle squadre
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">
+    Torna alla home
+</a>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Arbitri</title>
+</head>
+<body>
+
+<h1>Lista arbitri registrati</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Codice arbitrale</th>
+        <th>Dettaglio</th>
+        <th sec:authorize="hasAuthority('ADMIN')">Rimuovi arbitro</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="arbitro : ${modelArbitri}">
+        <td th:text="${arbitro.nome}"></td>
+        <td th:text="${arbitro.cognome}"></td>
+        <td th:text="${arbitro.codiceArbitrale}"></td>
+
+        <td>
+            <a th:href="@{/arbitro/{id}(id=${arbitro.id})}">
+                Vai al dettaglio
+            </a>
+        </td>
+
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <form th:action="@{/admin/arbitro/{id}/elimina(id=${arbitro.id})}" method="post">
+                <button type="submit">Rimuovi arbitro</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <a th:href="@{/admin/listaArbitri/nuovo}">
+        Inserisci nuovo arbitro
+    </a>
+    <br><br>
+</div>
+
+<br>
+
+<a th:href="@{/home}">torna alla home</a>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuovo giocatore</title>
+</head>
+
+<body>
+
+<h1>Registrazione nuovo giocatore</h1>
+
+<form th:action="@{/admin/listaGiocatori/nuovo}" th:object="${modelNuovoGiocatore}" method="post">
+
+    <div>
+        <label>Inserisci nome giocatore: </label>
+        <input type="text" th:field="*{nome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci cognome giocatore: </label>
+        <input type="text" th:field="*{cognome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci data di nascita: </label>
+        <input type="date" th:field="*{dataDiNascita}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci altezza giocatore: </label>
+        <input type="text" th:field="*{altezza}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci ruolo giocatore: </label>
+        <input type="text" th:field="*{ruoloGiocatore}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Inserisci numero maglia: </label>
+        <input type="number" th:field="*{numeroMaglia}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Seleziona squadra giocatore:</label>
+
+        <select name="squadraId">
+
+            <option value="" selected>
+                    nessuna squadra selezionata
+            </option>
+
+            <option th:each="squadra : ${modelSquadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+            </option>
+        </select>
+    </div>
+
+
+    <br>
+
+    <button type="submit">Aggiungi giocatore</button>
+
+</form>
+
+<br>
+
+<a th:href="@{/listaSquadre}">Torna alla lista delle squadre</a>
+<br>
+<br>
+<a th:href="@{/home}">Torna alla home</a>
+
+</body>
+</html>

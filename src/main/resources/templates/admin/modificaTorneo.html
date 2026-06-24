@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica torneo</title>
+</head>
+<body>
+
+<h1>Modifica torneo</h1>
+
+<form th:action="@{/admin/torneo/{id}/modifica(id=${modelTorneo.id})}"
+      th:object="${modelTorneo}"
+      method="post">
+
+    <div>
+        <label>Nome torneo: </label>
+        <input type="text" th:field="*{nome}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Anno: </label>
+        <input type="number" th:field="*{anno}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Descrizione:</label>
+        <input type="text" th:field="*{descrizione}">
+    </div>
+
+    <br>
+
+    <button type="submit">Salva modifiche</button>
+
+</form>
+
+<br>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+
+    <a th:href="@{/admin/torneo/{id}/partita/nuova(id=${modelTorneo.id})}">
+        Inserisci nuova partita
+    </a>
+
+    <h3>Rimuovi squadra dal torneo</h3>
+
+    <form th:action="@{/admin/torneo/{id}/rimuoviSquadra(id=${modelTorneo.id})}" method="post">
+
+        <label>Seleziona squadra da rimuovere:</label>
+
+        <select name="squadraId">
+            <option value="" selected>
+                nessuna squadra selezionata
+            </option>
+
+            <option th:each="squadra : ${modelSquadre}"
+                    th:value="${squadra.id}"
+                    th:text="${squadra.nome}">
+            </option>
+        </select>
+
+        <button type="submit">Conferma eliminazione</button>
+
+    </form>
+
+</div>
+
+<br>
+
+<form th:action="@{/admin/torneo/{id}/elimina(id=${modelTorneo.id})}" method="post">
+    <button type="submit">Elimina torneo dal database</button>
+</form>
+
+<br>
+
+<a th:href="@{/listaTornei/{id}(id=${modelTorneo.id})}">
+    Torna al dettaglio torneo
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">
+    Torna alla home
+</a>
+
+</body>
+</html>
