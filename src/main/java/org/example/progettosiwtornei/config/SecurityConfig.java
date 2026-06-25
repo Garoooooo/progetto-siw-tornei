@@ -10,8 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -55,9 +59,37 @@ public class SecurityConfig {
     // Qui si decidono le regole di accesso alle pagine
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         httpSecurity.authorizeHttpRequests(authorize -> {
+
+            // Endpoint usati da React
+            authorize.requestMatchers("/api/**").permitAll();
+
             // Pagine pubbliche
-            authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/login", "/home", "/registrazione","/listaPartite", "/partita/**","/listaGiocatori", "/listaArbitri", "/arbitro/**", "/listaSquadre", "/squadra/**","/listaTornei", "/listaTornei/**" , "/giocatore/**", "/torneo/**","/css/**", "/images/**", "/favicon.ico").permitAll();
+            authorize.requestMatchers(HttpMethod.GET,
+                    "/",
+                    "/index",
+                    "/login",
+                    "/home",
+                    "/registrazione",
+                    "/listaPartite",
+                    "/partita/**",
+                    "/listaGiocatori",
+                    "/listaArbitri",
+                    "/arbitro/**",
+                    "/listaSquadre",
+                    "/squadra/**",
+                    "/listaTornei",
+                    "/listaTornei/**",
+                    "/giocatore/**",
+                    "/torneo/**",
+                    "/css/**",
+                    "/images/**",
+                    "/favicon.ico"
+            ).permitAll();
+
             authorize.requestMatchers(HttpMethod.POST, "/login", "/registrazione").permitAll();
 
             authorize.requestMatchers(HttpMethod.GET, "/home").authenticated();
@@ -65,14 +97,14 @@ public class SecurityConfig {
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority("ADMIN");
             authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority("ADMIN");
 
-            //tutto il resto richiede il login
+            // tutto il resto richiede il login
             authorize.anyRequest().authenticated();
         });
 
         // Configurazione login
         httpSecurity.formLogin(form -> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/home", true);   //dopo il login corretto --> vai a home
+            form.defaultSuccessUrl("/home", true);   // dopo il login corretto --> vai a home
             form.failureUrl("/login?error=true");
         });
 
@@ -86,5 +118,21 @@ public class SecurityConfig {
         });
 
         return httpSecurity.build();
+    }
+
+    // Serve per permettere a React, che gira su localhost:5173, di chiamare Spring, che gira su localhost:8080
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }
