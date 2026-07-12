@@ -5,6 +5,7 @@ import org.example.progettosiwtornei.entity.Partita;
 import org.example.progettosiwtornei.repository.ArbitroRepository;
 import org.example.progettosiwtornei.repository.PartitaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ public class ArbitroService {
         this.partitaRepository = partitaRepository;
     }
 
+    @Transactional(readOnly = true)
     public Arbitro getArbitro(Long id){
         return this.arbitroRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void eliminaArbitro(Long idArbitro) {
         Arbitro arbitro = this.arbitroRepository.findById(idArbitro).orElse(null);
 
@@ -35,14 +38,18 @@ public class ArbitroService {
             this.arbitroRepository.delete(arbitro);
         }
     }
+
+    @Transactional(readOnly = true)
     public List<Arbitro> getAllArbitri(){
         return this.arbitroRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Partita> listaPartiteArbitrateDallArbitro(Long id){
-    return this.getArbitro(id).getListaPartite();
+        return this.getArbitro(id).getListaPartite();
     }
 
+    @Transactional
     public void salvaArbitro(Arbitro arbitro){
         this.arbitroRepository.save(arbitro);
     }

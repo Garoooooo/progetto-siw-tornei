@@ -5,20 +5,22 @@ import org.example.progettosiwtornei.entity.Squadra;
 import org.example.progettosiwtornei.repository.GiocatoreRepository;
 import org.example.progettosiwtornei.repository.SquadraRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GiocatoreService {
-   private final GiocatoreRepository giocatoreRepository;
-   private final SquadraRepository squadraRepository;
+    private final GiocatoreRepository giocatoreRepository;
+    private final SquadraRepository squadraRepository;
 
     public GiocatoreService(GiocatoreRepository g, SquadraRepository s) {
         this.giocatoreRepository = g;
         this.squadraRepository=s;
     }
 
+    @Transactional(readOnly = true)
     public List<Giocatore> getGiocatoriSenzaSquadra(){
         List<Giocatore> giocatori=this.giocatoreRepository.findAll();
         List<Giocatore> giocatoriSenzaSquadra=new ArrayList<>();
@@ -30,6 +32,7 @@ public class GiocatoreService {
         return giocatoriSenzaSquadra;
     }
 
+    @Transactional
     public void modificaGiocatore(Long idGiocatore, Giocatore giocatoreModificato, Long squadraId) {
         Giocatore giocatore = this.giocatoreRepository.findById(idGiocatore).orElse(null);
 
@@ -52,6 +55,7 @@ public class GiocatoreService {
         }
     }
 
+    @Transactional
     public void eliminaGiocatore(Long idGiocatore) {
 
         Giocatore giocatore = this.giocatoreRepository.findById(idGiocatore).orElse(null);
@@ -61,16 +65,23 @@ public class GiocatoreService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Giocatore> getAllGiocatoriSquadra(Long id){
         Squadra squadra=squadraRepository.findById(id).orElse(null);
         return squadra.getGiocatori();
     }
+
+    @Transactional(readOnly = true)
     public Giocatore getGiocatore(Long id){
         return this.giocatoreRepository.findById(id).orElse(null);
     }
+
+    @Transactional(readOnly = true)
     public List<Giocatore> getAllGiocatoriRegistratiNelSistema(){
         return giocatoreRepository.findAll();
     }
+
+    @Transactional
     public void salvaGiocatore(Giocatore giocatore){
         this.giocatoreRepository.save(giocatore);
     }

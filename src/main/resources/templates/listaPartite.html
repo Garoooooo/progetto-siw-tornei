@@ -5,81 +5,95 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista partite</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<h1>Partite registrate nel sistema: </h1>
+<div class="container">
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Giornata</th>
-        <th>Torneo</th>
-        <th>Data e ora</th>
-        <th>Luogo</th>
-        <th>Arbitro</th>
-        <th>Stato</th>
-        <th>Squadra casa</th>
-        <th>Squadra ospite</th>
-        <th>Goal casa</th>
-        <th>Goal ospite</th>
-        <th>Dettaglio</th>
-        <th sec:authorize="hasAuthority('ADMIN')">Risultato</th>
-    </tr>
-    </thead>
+    <h1>Partite registrate nel sistema</h1>
 
-    <tbody>
-    <tr th:each="partita : ${modelPartite}">
-        <td th:text="${partita.giornata}"></td>
+    <table>
+        <thead>
+        <tr>
+            <th>Giornata</th>
+            <th>Torneo</th>
+            <th>Data e ora</th>
+            <th>Luogo</th>
+            <th>Arbitro</th>
+            <th>Stato</th>
+            <th>Squadra casa</th>
+            <th>Squadra ospite</th>
+            <th>Goal casa</th>
+            <th>Goal ospite</th>
+            <th>Dettaglio</th>
+            <th sec:authorize="hasAuthority('ADMIN')">Risultato</th>
+        </tr>
+        </thead>
 
-        <td>
-            <a th:href="@{/listaTornei/{id}(id=${partita.torneo.id})}"
-               th:text="${partita.torneo.nome}">
+        <tbody>
+        <tr th:each="partita : ${modelPartite}">
+            <td th:text="${partita.giornata}"></td>
+
+            <td>
+                <a th:href="@{/listaTornei/{id}(id=${partita.torneo.id})}"
+                   th:text="${partita.torneo.nome}">
+                </a>
+            </td>
+
+            <td th:text="${partita.dataOraPartita}"></td>
+
+            <td th:text="${partita.luogo}"></td>
+
+            <td th:text="${partita.arbitro != null ? partita.arbitro.nome + ' ' + partita.arbitro.cognome : 'Nessun arbitro'}"></td>
+
+            <td th:text="${partita.statoPartita}"></td>
+
+            <td>
+                <a th:href="@{/squadra/{id}(id=${partita.squadraCasa.id})}"
+                   th:text="${partita.squadraCasa.nome}">
+                </a>
+            </td>
+
+            <td>
+                <a th:href="@{/squadra/{id}(id=${partita.squadraOspite.id})}"
+                   th:text="${partita.squadraOspite.nome}">
+                </a>
+            </td>
+
+            <td th:text="${partita.goalsHome}"></td>
+            <td th:text="${partita.goalsAway}"></td>
+
+            <td>
+                <a th:href="@{/partita/{id}(id=${partita.id})}">
+                    Vai al dettaglio
+                </a>
+            </td>
+
+            <td sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/admin/partita/{id}/modifica(id=${partita.id})}">
+                    Inserisci/modifica risultato
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="buttons">
+
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a class="button" th:href="@{/listaTornei}">
+                Vai ai tornei per inserire una nuova partita
             </a>
-        </td>
+        </div>
 
-        <td th:text="${partita.dataOraPartita}"></td>
+        <a class="button" th:href="@{/home}">
+            Torna alla home
+        </a>
 
-        <td th:text="${partita.luogo}"></td>
+    </div>
 
-        <td th:text="${partita.arbitro != null ? partita.arbitro.nome + ' ' + partita.arbitro.cognome : 'Nessun arbitro'}"></td>
-
-        <td th:text="${partita.statoPartita}"></td>
-
-        <td>
-            <a th:href="@{/squadra/{id}(id=${partita.squadraCasa.id})}"
-               th:text="${partita.squadraCasa.nome}">
-            </a>
-        </td>
-
-        <td>
-            <a th:href="@{/squadra/{id}(id=${partita.squadraOspite.id})}"
-               th:text="${partita.squadraOspite.nome}">
-            </a>
-        </td>
-
-        <td th:text="${partita.goalsHome}"></td>
-        <td th:text="${partita.goalsAway}"></td>
-
-        <td>
-            <a th:href="@{/partita/{id}(id=${partita.id})}">Vai al dettaglio</a>
-        </td>
-
-        <td sec:authorize="hasAuthority('ADMIN')">
-            <a th:href="@{/admin/partita/{id}/risultato(id=${partita.id})}">
-                Inserisci/modifica risultato
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<br><br>
-<div sec:authorize="hasAuthority('ADMIN')">
-    <a th:href="@{/listaTornei}">Vai ai tornei per inserire una nuova partita</a>
-    <br><br>
 </div>
-
-<a th:href="@{/home}">Torna alla home</a>
 
 </body>
 </html>

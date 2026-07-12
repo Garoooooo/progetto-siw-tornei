@@ -6,6 +6,7 @@ import org.example.progettosiwtornei.entity.Squadra;
 import org.example.progettosiwtornei.repository.GiocatoreRepository;
 import org.example.progettosiwtornei.repository.SquadraRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +21,17 @@ public class SquadraService {
         this.giocatoreRepository = giocatoreRepository;
     }
 
+    @Transactional(readOnly = true)
     public Squadra getSquadraById(Long id){
         return this.squadraRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void salvaSquadra(Squadra squadra){
         this.squadraRepository.save(squadra);
     }
 
+    @Transactional
     public void rimuoviGiocatoreDallaSquadra(Long idSquadra, Long idGiocatore) {
         Squadra squadra = this.squadraRepository.findById(idSquadra).orElse(null);
         Giocatore giocatore = this.giocatoreRepository.findById(idGiocatore).orElse(null);
@@ -42,6 +46,7 @@ public class SquadraService {
         }
     }
 
+    @Transactional
     public void eliminaSquadra(Long idSquadra) {
 
         Squadra squadra = this.squadraRepository.findById(idSquadra).orElse(null);
@@ -57,6 +62,7 @@ public class SquadraService {
         }
     }
 
+    @Transactional
     public void aggiungiGiocatore(Long idSquadra, Long idGiocatore) {
         Squadra squadra = this.squadraRepository.findById(idSquadra).orElse(null);
         Giocatore giocatore = this.giocatoreRepository.findById(idGiocatore).orElse(null);
@@ -67,6 +73,7 @@ public class SquadraService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Squadra> getAllSquadre(){
         return this.squadraRepository.findAll();
     }

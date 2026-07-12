@@ -8,6 +8,7 @@ import org.example.progettosiwtornei.repository.UtenteRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class CommentoService {
         this.utenteRepository = utenteRepository;
     }
 
+    @Transactional
     public void addCommento(Long idPartita, String testo) {
         Partita partita = this.partitaRepository.findById(idPartita).orElse(null);
 
@@ -43,6 +45,8 @@ public class CommentoService {
             this.commentoRepository.save(commento);
         }
     }
+
+    @Transactional
     public void eliminaCommento(Long idCommento) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -61,12 +65,18 @@ public class CommentoService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<Commento> getTuttiCommentiPerPartita(Long idPartita){
-    Partita partita= this.partitaRepository.findById(idPartita).orElse(null);
-    if(partita==null)
-        return null;
+        Partita partita= this.partitaRepository.findById(idPartita).orElse(null);
+        if(partita==null)
+            return null;
         else
             return partita.getListaCommenti();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Commento> getCommentiConJoinFetch(Long idPartita) {
+        return this.commentoRepository.findByPartitaIdWithJoinFetch(idPartita);
     }
 
 }
