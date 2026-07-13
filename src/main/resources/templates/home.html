@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="it"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:C="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" th:href="@{/css/stylehome&index.css}">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <style>
+        body {
+            background-image: url('/images/immagine progetto siw.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body>
 
@@ -56,5 +65,6 @@
 <div sec:authorize="isAnonymous()">
     <a th:href="@{/login}">Accedi/Registrati</a>
 </div>
+
 </body>
 </html>
