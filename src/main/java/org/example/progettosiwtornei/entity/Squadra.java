@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,12 +17,16 @@ public class Squadra {
     private String citta;
     private Integer annoFondazione;
     @OneToMany(mappedBy = "squadra")
+    @JsonIgnoreProperties("squadra")
     private List<Giocatore> giocatori;
     @ManyToMany(mappedBy = "squadrePartecipanti")
+    @JsonIgnoreProperties("squadrePartecipanti")
     private List<Torneo> torneiIscritti;
     @OneToMany(mappedBy = "squadraCasa")
+    @JsonIgnoreProperties({"squadraCasa", "squadraOspite"})
     private List<Partita> partiteInCasa;
     @OneToMany(mappedBy = "squadraOspite")
+    @JsonIgnoreProperties({"squadraCasa", "squadraOspite"})
     private List<Partita> partiteInTrasferta;
 
 
@@ -59,19 +64,19 @@ public class Squadra {
         this.partiteInTrasferta = partiteInTrasferta;
     }
 
-    public List<Torneo> getTorneiIscritti() {    // per ottenere tutta la lista di tornei a cui la squadra partecipa
+    public List<Torneo> getTorneiIscritti() {
         return torneiIscritti;
     }
 
-    public void setTorneiIscritti(List<Torneo> torneiIscritti) {    //per impostare una lista (che magari possiedo gia formata) e metterla come lista di tornei della squadra.
+    public void setTorneiIscritti(List<Torneo> torneiIscritti) {
         this.torneiIscritti = torneiIscritti;
     }
 
-    public List<Giocatore> getGiocatori() {      // per ottenere tutta la lista di giocatori della squadra
+    public List<Giocatore> getGiocatori() {
         return giocatori;
     }
 
-    public void setGiocatori(List<Giocatore> giocatori) {     //per impostare una lista (che magari possiedo gia formata) e metterla come lista di giocatori della squadra.
+    public void setGiocatori(List<Giocatore> giocatori) {
         this.giocatori = giocatori;
     }
 

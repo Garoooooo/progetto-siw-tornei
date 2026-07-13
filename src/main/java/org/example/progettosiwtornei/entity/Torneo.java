@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,11 +17,13 @@ public class Torneo {
     @GeneratedValue
     private Long id;
     @OneToMany(mappedBy = "torneo" )
+    @JsonIgnoreProperties({"torneo", "arbitro", "squadraCasa", "squadraOspite", "listaCommenti"})
     private List<Partita> listaPartite;
     private String nome;
     private Integer anno;
     private String descrizione;
     @ManyToMany
+    @JsonIgnoreProperties({"torneiIscritti", "partiteInCasa", "partiteInTrasferta", "giocatori"})
     private List<Squadra> squadrePartecipanti;        //<squadra, punti fatti>
 
     public Torneo() {

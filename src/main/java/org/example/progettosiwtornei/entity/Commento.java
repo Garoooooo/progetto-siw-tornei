@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,8 +12,10 @@ public class Commento {
     private String testo;
     private LocalDateTime dataEOra;
     @ManyToOne                 //molti commenti--> una partita
+    @JsonIgnoreProperties({"listaCommenti", "arbitro", "squadraCasa", "squadraOspite", "torneo"})
     private Partita partita;  //un commento va a una sola partita, una partita può avere molti commenti
     @ManyToOne                 //molti commenti --> un utente
+    @JsonIgnoreProperties("commentiPubblicati")
     private Utente utente;    //un commento è scritto solo da un utente, un utente può scrivere tanti commenti
 
     public Commento() {

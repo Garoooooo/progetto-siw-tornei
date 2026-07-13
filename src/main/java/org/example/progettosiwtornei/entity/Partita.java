@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.example.progettosiwtornei.classiAusiliarie.StatoPartita;
 
@@ -22,6 +23,7 @@ public class Partita implements Comparable<Partita> {
     @ManyToOne      //per singola partita, ho solo una squadra ospite, per la squadra ospite invece ho molte partite
     private Squadra squadraOspite;
     @ManyToOne
+    @JsonIgnoreProperties("listaPartite")
     private Arbitro arbitro;
     @OneToMany(mappedBy = "partita")
     private List<Commento> listaCommenti;

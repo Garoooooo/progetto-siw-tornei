@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +17,7 @@ public class Arbitro {
     private String cognome;
     private Long codiceArbitrale;
     @OneToMany(mappedBy = "arbitro")
+    @JsonIgnoreProperties("arbitro")
     private List<Partita> listaPartite;
 
     public Arbitro() {

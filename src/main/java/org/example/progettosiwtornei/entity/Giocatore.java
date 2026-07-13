@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Giocatore {
     @Enumerated(EnumType.STRING)
     private RuoloGiocatore ruoloGiocatore;
     @ManyToOne
+    @JsonIgnoreProperties({"giocatori", "partiteInCasa", "partiteInTrasferta", "torneiIscritti"})
     private Squadra squadra;
 
     private Integer numeroMaglia;

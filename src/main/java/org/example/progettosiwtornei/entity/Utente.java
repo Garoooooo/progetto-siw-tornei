@@ -1,4 +1,5 @@
 package org.example.progettosiwtornei.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.example.progettosiwtornei.classiAusiliarie.RuoloUtente;
 
@@ -15,6 +16,7 @@ public class Utente {
     @Enumerated(EnumType.STRING)
     private RuoloUtente ruoloUtente;
     @OneToMany(mappedBy ="utente")
+    @JsonIgnoreProperties("utente")
     private List<Commento> commentiPubblicati;
 
 
