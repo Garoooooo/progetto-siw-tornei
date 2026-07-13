@@ -63,13 +63,13 @@
     </div>
 
     <br>
-
     <div>
         <label>Squadra casa:</label>
         <select name="squadraCasaId">
             <option th:each="squadra : ${modelSquadre}"
                     th:value="${squadra.id}"
                     th:text="${squadra.nome}"
+                    th:selected="${modelPartita.squadraCasa != null and squadra.id == modelPartita.squadraCasa.id}">
             </option>
         </select>
     </div>
@@ -82,10 +82,10 @@
             <option th:each="squadra : ${modelSquadre}"
                     th:value="${squadra.id}"
                     th:text="${squadra.nome}"
+                    th:selected="${modelPartita.squadraOspite != null and squadra.id == modelPartita.squadraOspite.id}">
             </option>
         </select>
     </div>
-
     <br>
 
     <div>
