@@ -1,7 +1,5 @@
 package org.example.progettosiwtornei.service;
-import org.example.progettosiwtornei.entity.Commento;
-import org.example.progettosiwtornei.entity.Partita;
-import org.example.progettosiwtornei.entity.Utente;
+import org.example.progettosiwtornei.entity.*;
 import org.example.progettosiwtornei.repository.CommentoRepository;
 import org.example.progettosiwtornei.repository.PartitaRepository;
 import org.example.progettosiwtornei.repository.UtenteRepository;
@@ -64,6 +62,27 @@ public class CommentoService {
         }
 
     }
+
+    @Transactional
+    public Commento modificaCommento(Long idCommento, Commento commentoModificato) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Utente utenteLoggato = this.utenteRepository.findByUsername(username);
+        Commento commentoDaModificare = this.commentoRepository.findById(idCommento).orElse(null);
+
+        if (commentoDaModificare != null && commentoDaModificare.getUtente() != null && commentoDaModificare.getUtente().equals(utenteLoggato)) {
+            commentoDaModificare.setDataEOra(LocalDateTime.now());
+            commentoDaModificare.setTesto(commentoModificato.getTesto());
+            return this.commentoRepository.save(commentoDaModificare);
+        }
+        return null;
+    }
+
+    @Transactional
+    public Commento getCommentoById(Long id){
+        return this.commentoRepository.findById(id).orElse(null);
+    }
+
 
     @Transactional(readOnly = true)
     public List<Commento> getTuttiCommentiPerPartita(Long idPartita){

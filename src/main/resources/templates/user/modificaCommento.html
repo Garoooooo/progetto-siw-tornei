@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica commento</title>
+</head>
+<body>
+
+<h1>Modifica commento</h1>
+
+<form th:action="@{/commento/{id}/modifica(id=${modelCommento.id})}"
+      th:object="${modelCommento}"
+      method="post">
+
+    <div>
+        <label>Testo del commento: </label>
+        <textarea th:field="*{testo}" rows="4" cols="50"></textarea>
+    </div>
+
+
+    <br>
+
+    <button type="submit">Salva modifiche</button>
+
+</form>
+
+<br>
+<form th:action="@{/commento/{id}/elimina(id=${modelCommento.id})}" method="post">
+    <input type="hidden" name="idPartita" th:value="${modelCommento.partita.id}">
+    <button type="submit">Elimina commento</button>
+</form>
+<br>
+
+<a th:href="@{/partita/{id}(id=${modelCommento.partita.id})}">
+    Torna al dettaglio partita
+</a>
+
+<br><br>
+
+<a th:href="@{/home}">
+    Torna alla home
+</a>
+
+</body>
+</html>

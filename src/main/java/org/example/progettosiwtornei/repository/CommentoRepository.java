@@ -19,4 +19,5 @@ public interface CommentoRepository extends JpaRepository<Commento, Long> {
             "LEFT JOIN FETCH c.utente " +
             "WHERE c.utente.id = :idUtente")
     List<Commento> findByUtenteIdWithJoinFetch(@Param("idUtente") Long idUtente);
+
 }
