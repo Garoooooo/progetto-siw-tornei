@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToMany;
 import java.util.Objects;
 
 @Entity
-public class Squadra {
+public class Squadra{
 
     @Id    @GeneratedValue
     private Long id;

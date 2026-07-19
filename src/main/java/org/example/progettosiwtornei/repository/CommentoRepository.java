@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface CommentoRepository extends JpaRepository<Commento, Long> {
 
+    // LAZY
+    List<Commento> findByUtenteId(Long utenteId);
+
+    // JOIN FETCH
     @Query("SELECT c FROM Commento c " +
-            "LEFT JOIN FETCH c.partita " +
             "LEFT JOIN FETCH c.utente " +
-            "WHERE c.partita.id = :idPartita")
-    List<Commento> findByPartitaIdWithJoinFetch(@Param("idPartita") Long idPartita);
-
-    List<Commento> findByPartitaId(Long partitaId);
-
+            "WHERE c.utente.id = :idUtente")
+    List<Commento> findByUtenteIdWithJoinFetch(@Param("idUtente") Long idUtente);
 }

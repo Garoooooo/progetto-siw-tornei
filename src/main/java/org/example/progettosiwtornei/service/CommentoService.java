@@ -74,9 +74,4 @@ public class CommentoService {
             return partita.getListaCommenti();
     }
 
-    @Transactional(readOnly = true)
-    public List<Commento> getCommentiConJoinFetch(Long idPartita) {
-        return this.commentoRepository.findByPartitaIdWithJoinFetch(idPartita);
-    }
-
 }

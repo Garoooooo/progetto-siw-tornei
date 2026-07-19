@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -75,6 +76,7 @@ public class SquadraService {
 
     @Transactional(readOnly = true)
     public List<Squadra> getAllSquadre(){
-        return this.squadraRepository.findAll();
+        List <Squadra> allSquadre=this.squadraRepository.findAll();
+        return allSquadre;
     }
 }

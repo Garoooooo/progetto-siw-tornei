@@ -29,7 +29,9 @@
 
     <div>
         <label>Data e ora partita: </label>
-        <input type="datetime-local" th:field="*{dataOraPartita}">
+        <input type="datetime-local"
+               th:name="dataOraPartita"
+               th:value="${#temporals.format(modelPartita.dataOraPartita, 'yyyy-MM-dd''T''HH:mm')}">
     </div>
 
     <br>

@@ -1,9 +1,9 @@
 package org.example.progettosiwtornei;
 
 import org.example.progettosiwtornei.entity.Commento;
-import org.example.progettosiwtornei.entity.Partita;
+import org.example.progettosiwtornei.entity.Utente;
 import org.example.progettosiwtornei.repository.CommentoRepository;
-import org.example.progettosiwtornei.repository.PartitaRepository;
+import org.example.progettosiwtornei.repository.UtenteRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +15,12 @@ import java.util.List;
 public class MAIN_ProgettoSiwTornei implements CommandLineRunner {
 
     private final CommentoRepository commentoRepository;
-    private final PartitaRepository partitaRepository;
+    private final UtenteRepository utenteRepository;
 
     public MAIN_ProgettoSiwTornei(CommentoRepository commentoRepository,
-                                  PartitaRepository partitaRepository) {
+                                  UtenteRepository utenteRepository) {
         this.commentoRepository = commentoRepository;
-        this.partitaRepository = partitaRepository;
+        this.utenteRepository = utenteRepository;
     }
 
     public static void main(String[] args) {
@@ -34,43 +34,44 @@ public class MAIN_ProgettoSiwTornei implements CommandLineRunner {
     }
 
     private void testNpiu1() {
-        // Trova la prima partita con commenti
-        List<Partita> tutte = partitaRepository.findAll();
-        Partita partitaConCommenti = null;
-        for (Partita p : tutte) {
-            if (p.getListaCommenti() != null && !p.getListaCommenti().isEmpty()) {
-                partitaConCommenti = p;
+        // trova il primo utente che ha scritto almeno un commento
+        List<Utente> tuttiGliUtenti = utenteRepository.findAll();
+        Utente utenteConCommenti = null;
+        for (Utente u : tuttiGliUtenti) {
+            if (u.getCommentiPubblicati() != null && !u.getCommentiPubblicati().isEmpty()) {
+                utenteConCommenti = u;
                 break;
             }
         }
 
-        if (partitaConCommenti == null) {
-            System.out.println("NESSUN COMMENTO NEL DATABASE! Aggiungi un commento prima.");
+        if (utenteConCommenti == null) {
+            System.out.println("NESSUN UTENTE CON COMMENTI! Aggiungi un commento prima.");
             return;
         }
 
-        Long idPartita = partitaConCommenti.getId();
-        System.out.println("Test con partita ID=" + idPartita);
+        Long idUtente = utenteConCommenti.getId();
+        System.out.println("Test con utente ID=" + idUtente + " (username=" + utenteConCommenti.getUsername() + ")");
 
-        // --- TEST 1: LAZY ---
+        //test lazy
         long start1 = System.currentTimeMillis();
-        List<Commento> commentiLazy = commentoRepository.findByPartitaId(idPartita);
+        List<Commento> commentiLazy = commentoRepository.findByUtenteId(idUtente);
         for (Commento c : commentiLazy) {
-            c.getUtente().getUsername();
+            c.getUtente().getUsername();  // N+1: ogni commento fa una query extra per Utente
         }
         long end1 = System.currentTimeMillis();
 
-        // --- TEST 2: JOIN FETCH ---
+        //test join fetch
         long start2 = System.currentTimeMillis();
-        List<Commento> commentiFetch = commentoRepository.findByPartitaIdWithJoinFetch(idPartita);
+        List<Commento> commentiFetch = commentoRepository.findByUtenteIdWithJoinFetch(idUtente);
         for (Commento c : commentiFetch) {
-            c.getUtente().getUsername();
+            c.getUtente().getUsername();  // 0 query extra: Utente già caricato dal JOIN
         }
         long end2 = System.currentTimeMillis();
 
-        System.out.println("========== RISULTATI N+1 ==========");
-        System.out.println("LAZY (normale): " + (end1 - start1) + " ms");
-        System.out.println("JOIN FETCH:     " + (end2 - start2) + " ms");
-        System.out.println("====================================");
-    }
+        System.out.println("");
+        System.out.println("");
+        System.out.println("RISULTATI ANALISI N+1:");
+        System.out.println("LAZY :" + (end1 - start1) + " ms");
+        System.out.println("JOIN FETCH :" + (end2 - start2) + " ms");
+       }
 }

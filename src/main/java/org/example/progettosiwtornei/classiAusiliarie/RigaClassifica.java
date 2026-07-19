@@ -29,7 +29,7 @@ public class RigaClassifica implements Comparable<RigaClassifica>{
 
 
     @Override
-    public int compareTo(RigaClassifica o) {
-        return o.getPunteggio()-this.getPunteggio();
+    public int compareTo(RigaClassifica that) {
+        return that.getPunteggio()-this.getPunteggio();
     }
 }
