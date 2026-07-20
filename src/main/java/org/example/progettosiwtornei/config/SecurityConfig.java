@@ -62,6 +62,8 @@ public class SecurityConfig {
 
         httpSecurity.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
+        httpSecurity.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
+
         httpSecurity.authorizeHttpRequests(authorize -> {
 
             // Endpoint usati da React
