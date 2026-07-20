@@ -47,7 +47,7 @@ function App() {
                     <th>Cognome</th>
                     <th>Codice arbitrale</th>
                     <th>Dettaglio</th>
-                    <th>Azioni</th>
+                    {ruolo === "ADMIN" && <th>Elimina arbitro</th>}
                 </tr>
                 </thead>
 
@@ -62,13 +62,13 @@ function App() {
                                 Vai al dettaglio
                             </a>
                         </td>
-                        <td>
-                            {ruolo === "ADMIN" && (
+                        {ruolo === "ADMIN" && (
+                            <td>
                                 <button onClick={() => eliminaArbitro(arbitro.id)}>
                                     Rimuovi arbitro
                                 </button>
-                            )}
-                        </td>
+                            </td>
+                        )}
                     </tr>
                 ))}
                 </tbody>
