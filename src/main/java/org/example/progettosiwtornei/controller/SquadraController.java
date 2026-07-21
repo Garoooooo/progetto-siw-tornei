@@ -19,6 +19,7 @@ public SquadraController(SquadraService s, GiocatoreService g){
 @GetMapping("/squadra/{id}")
 public String mostraSquadraEAllSuoiGiocatori(@PathVariable Long id, Model model){
     model.addAttribute("modelSquadra", squadraService.getSquadraById(id));
+    model.addAttribute("modelPartiteSquadra",squadraService.getAllPartiteSquadra(id));
     model.addAttribute("modelGiocatoriSquadra", giocatoreService.getAllGiocatoriSquadra(id));
     return "squadra";
 }

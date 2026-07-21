@@ -5,6 +5,7 @@ import org.example.progettosiwtornei.entity.Partita;
 import org.example.progettosiwtornei.entity.Squadra;
 import org.example.progettosiwtornei.repository.GiocatoreRepository;
 import org.example.progettosiwtornei.repository.SquadraRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +79,15 @@ public class SquadraService {
     public List<Squadra> getAllSquadre(){
         List <Squadra> allSquadre=this.squadraRepository.findAll();
         return allSquadre;
+    }
+
+    public List<Partita> getAllPartiteSquadra(Long id) {
+        List<Partita> partiteInCasa = this.squadraRepository.findById(id).orElse(null).getPartiteInCasa();
+        List<Partita> partiteInTrasferta = this.squadraRepository.findById(id).orElse(null).getPartiteInTrasferta();
+        List<Partita> partiteSquadra = new ArrayList<>();
+        partiteSquadra.addAll(partiteInCasa);
+        partiteSquadra.addAll(partiteInTrasferta);
+        Collections.sort(partiteSquadra);
+        return partiteSquadra;
     }
 }

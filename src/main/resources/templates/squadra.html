@@ -19,6 +19,7 @@
     <strong>Città:</strong>
     <span th:text="${modelSquadra.citta}"></span>
 </p>
+
 <h1></h1>
 <p>
     <strong>Lista giocatori: </strong>
@@ -47,6 +48,80 @@
 
 
 </table>
+
+<h1>Partite</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Giornata</th>
+        <th>Torneo</th>
+        <th>Data e ora</th>
+        <th>Luogo</th>
+        <th>Arbitro</th>
+        <th>Stato</th>
+        <th>Squadra casa</th>
+        <th>Squadra ospite</th>
+        <th>Goal casa</th>
+        <th>Goal ospite</th>
+        <th sec:authorize="hasAuthority('ADMIN')">Modifica</th>
+        <th sec:authorize="hasAuthority('ADMIN')">Elimina</th>
+    </tr>
+    </thead>
+
+    <h1></h1>
+
+    <tbody>
+    <tr th:each="partita : ${modelPartiteSquadra}">
+        <td th:text="${partita.giornata}"></td>
+
+        <td>
+            <a th:href="@{/listaTornei/{id}(id=${partita.torneo.id})}"
+               th:text="${partita.torneo.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.dataOraPartita}"></td>
+
+        <td th:text="${partita.luogo}"></td>
+
+        <td th:text="${partita.arbitro != null ? partita.arbitro.nome + ' ' + partita.arbitro.cognome : 'Nessun arbitro assegnato'}"></td>
+
+        <td th:text="${partita.statoPartita}"></td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraCasa.id})}"
+               th:text="${partita.squadraCasa.nome}">
+            </a>
+        </td>
+
+        <td>
+            <a th:href="@{/squadra/{id}(id=${partita.squadraOspite.id})}"
+               th:text="${partita.squadraOspite.nome}">
+            </a>
+        </td>
+
+        <td th:text="${partita.goalsHome}"></td>
+
+        <td th:text="${partita.goalsAway}"></td>
+
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/admin/partita/{id}/modifica(id=${partita.id})}">
+                Modifica partita
+            </a>
+        </td>
+
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <form th:action="@{/admin/partita/{id}/elimina(id=${partita.id})}" method="post">
+                <button type="submit">Elimina partita</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
 <br>
 <a th:href="@{/listaSquadre}">Torna alla lista squadre</a>
 

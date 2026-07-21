@@ -1,6 +1,7 @@
 package org.example.progettosiwtornei.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.example.progettosiwtornei.classiAusiliarie.RigaClassifica;
 import org.example.progettosiwtornei.classiAusiliarie.StatoPartita;
 
 import java.time.LocalDateTime;
